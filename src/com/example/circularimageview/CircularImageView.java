@@ -1,11 +1,13 @@
 package com.example.circularimageview;
 
-import com.example.circularimageview.R;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.graphics.PorterDuff.Mode;
@@ -21,23 +23,24 @@ import android.widget.ImageView;
 
 public class CircularImageView extends ImageView{
 
-	private static final String TAG = "ImagineaView";
+	private static final String TAG = "CircularImageView";
 	public boolean isMeasured = true; 
 	private static int imageWidth;
 	private static int imageHeight;
 
-	public interface onClickListener {
+	public interface onCircularClickListener {
 		public void onCircularButtonClick(View v);
 	}
 
-	public onClickListener onClickListener;
+	private onCircularClickListener onClickListener;
 	private boolean BUTTON_PRESSED;
 	private boolean IS_PRESSED;
+	private boolean isNotDrawn;
 
-	public CircularImageView(Context context, AttributeSet attrs){
+	public CircularImageView(Context context, AttributeSet attrs) {
 		super(context,attrs);
 		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.Options);
-		int maskAlphaFactor = a.getInteger(R.styleable.Options_alpha,0);
+		int maskAlphaFactor = a.getInteger(R.styleable.Options_alpha,0);		
 		if(maskAlphaFactor >1){
 			try {
 				throw new Exception("Cannot take alpha inputs greater than 1");
@@ -47,8 +50,46 @@ public class CircularImageView extends ImageView{
 			}
 		}
 
+		// TODO create onClick from xml itself.
+		final String handlerName = a.getString(R.styleable.Options_onCircularButtonClick);
+
+		if (handlerName != null) {
+			setOnCircularClickListener(new onCircularClickListener() {
+				private Method mHandler;
+
+				public void onCircularButtonClick(View v) {
+					if (mHandler == null) {
+						try {
+							mHandler = getContext().getClass().getMethod(handlerName,
+									View.class);
+						} catch (NoSuchMethodException e) {
+							int id = getId();
+							String idText = id == NO_ID ? "" : " with id '"
+									+ getContext().getResources().getResourceEntryName(
+											id) + "'";
+							throw new IllegalStateException("Could not find a method " +
+									handlerName + "(View) in the activity "
+									+ getContext().getClass() + " for onClick handler"
+									+ " on view " + v.getClass() + idText, e);
+						}
+					}
+					try {
+						mHandler.invoke(getContext(), v);
+					} catch (IllegalAccessException e) {
+						throw new IllegalStateException("Could not execute non "
+								+ "public method of the activity", e);
+					} catch (InvocationTargetException e) {
+						throw new IllegalStateException("Could not execute "
+								+ "method of the activity", e);
+					}
+				}
+			});
+		}
+		
 		setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 		setCircularImageView(this.getDrawable(),maskAlphaFactor);
+		isNotDrawn = true;
+		invalidate();
 		a.recycle();
 	}
 
@@ -83,6 +124,42 @@ public class CircularImageView extends ImageView{
 			e.printStackTrace();
 		}
 	}
+	
+	private Bitmap getRoundedRectBitmap(Bitmap bitmap,int pixels) {
+		Bitmap result = null;
+		try {
+			result = Bitmap.createBitmap(pixels,pixels, Bitmap.Config.ARGB_8888);
+			Canvas canvas = new Canvas(result);
+
+			int color = 0xff424242;
+			Paint paint = new Paint(Paint.FILTER_BITMAP_FLAG);
+			Rect rect = new Rect(0,0, pixels, pixels);
+
+			paint.setAntiAlias(true);
+			canvas.drawARGB(0, 0, 0, 0);
+			paint.setColor(color);
+			canvas.drawCircle(pixels/2, pixels/2,pixels/2, paint);
+			paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));		
+			canvas.drawBitmap(bitmap, rect, rect, paint);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	
+	@Override
+	public void setOnClickListener(OnClickListener l) {
+		// TODO Auto-generated method stub
+		try {
+			throw new Exception("Use circularClickLister instead of onClickListener");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 
 	/*
 	 * (non-Javadoc)
@@ -139,7 +216,6 @@ public class CircularImageView extends ImageView{
 
 		if(up && BUTTON_PRESSED){
 			BUTTON_PRESSED=false;
-			Log.e(TAG, "distance -- "+distance+" -- radius --"+radius);
 			if(onClickListener!=null){
 				onClickListener.onCircularButtonClick(this);
 			}
@@ -147,30 +223,7 @@ public class CircularImageView extends ImageView{
 
 	}
 
-	private Bitmap getRoundedRectBitmap(Bitmap bitmap,int pixels) {
-		Bitmap result = null;
-		try {
-			result = Bitmap.createBitmap(pixels,pixels, Bitmap.Config.ARGB_8888);
-			Canvas canvas = new Canvas(result);
-
-			int color = 0xff424242;
-			Paint paint = new Paint(Paint.FILTER_BITMAP_FLAG);
-			Rect rect = new Rect(0,0, pixels, pixels);
-
-			paint.setAntiAlias(true);
-			canvas.drawARGB(0, 0, 0, 0);
-			paint.setColor(color);
-			canvas.drawCircle(pixels/2, pixels/2,pixels/2, paint);
-			paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));		
-			canvas.drawBitmap(bitmap, rect, rect, paint);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
-
-	public void setOnClickListener(onClickListener onClickListener) {
+	public void setOnCircularClickListener(onCircularClickListener onClickListener) {
 		// TODO Auto-generated method stub
 		this.onClickListener = onClickListener;
 	}
