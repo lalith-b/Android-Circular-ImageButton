@@ -6,8 +6,8 @@ import java.lang.reflect.Method;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.graphics.PorterDuff.Mode;
@@ -16,15 +16,12 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
 public class CircularImageView extends ImageView{
 
-	private static final String TAG = "CircularImageView";
-	public boolean isMeasured = true; 
 	private static int imageWidth;
 	private static int imageHeight;
 
@@ -35,7 +32,6 @@ public class CircularImageView extends ImageView{
 	private onCircularClickListener onClickListener;
 	private boolean BUTTON_PRESSED;
 	private boolean IS_PRESSED;
-	private boolean isNotDrawn;
 
 	public CircularImageView(Context context, AttributeSet attrs) {
 		super(context,attrs);
@@ -85,49 +81,53 @@ public class CircularImageView extends ImageView{
 				}
 			});
 		}
-		
+
 		setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-		setCircularImageView(this.getDrawable(),maskAlphaFactor);
-		isNotDrawn = true;
-		invalidate();
+		setCircularImageDrawable(this.getDrawable(),maskAlphaFactor);
 		a.recycle();
 	}
 
-	public void setCircularImageView(Drawable resId,int alpha){
-		try{
-			Bitmap bm = ((BitmapDrawable)resId).getBitmap();
-			Bitmap resized;
-
-			if(bm.getHeight()>bm.getWidth()){
-				resized = Bitmap.createScaledBitmap(bm, bm.getHeight(), bm.getHeight(), true);
-			}else if(bm.getWidth()>bm.getHeight()){
-				resized = Bitmap.createScaledBitmap(bm, bm.getWidth(),bm.getWidth(), true);
-			}else{
-				resized = Bitmap.createScaledBitmap(bm, bm.getWidth(),bm.getHeight(), true);
-			}
-
-			imageWidth = bm.getWidth();
-			imageHeight = bm.getHeight();
-
-			Bitmap circular_bitmap;
-
-			if(imageWidth > imageHeight){
-				circular_bitmap = getRoundedRectBitmap(resized,imageWidth);
-			}else if(imageHeight > imageWidth){
-				circular_bitmap = getRoundedRectBitmap(resized,imageHeight);
-			}else{
-				circular_bitmap = getRoundedRectBitmap(resized,imageWidth);
-			}
-
-			this.setImageBitmap(circular_bitmap);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
+	public void setCircularImageDrawable(Drawable resId,int alpha){
+		Bitmap bm = ((BitmapDrawable)resId).getBitmap();
+		this.setImageBitmap(getRoundedRectBitmap(bm));
 	}
-	
-	private Bitmap getRoundedRectBitmap(Bitmap bitmap,int pixels) {
+
+	public void setCircularImageResource(int resId,int alpha){
+		Bitmap bm = BitmapFactory.decodeResource(getResources(), resId);
+		this.setImageBitmap(getRoundedRectBitmap(bm));
+	}
+
+	public void setCircularImageBitmap(Bitmap resId,int alpha){
+		this.setImageBitmap(getRoundedRectBitmap(resId));
+	}
+
+
+	private Bitmap getRoundedRectBitmap(Bitmap bitmap) {
+		int pixels;
 		Bitmap result = null;
 		try {
+
+			Bitmap resized;
+
+			if(bitmap.getHeight()>bitmap.getWidth()){
+				resized = Bitmap.createScaledBitmap(bitmap, bitmap.getHeight(), bitmap.getHeight(), true);
+			}else if(bitmap.getWidth()>bitmap.getHeight()){
+				resized = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(),bitmap.getWidth(), true);
+			}else{
+				resized = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(),bitmap.getHeight(), true);
+			}
+
+			imageWidth = bitmap.getWidth();
+			imageHeight = bitmap.getHeight();
+
+			if(imageWidth > imageHeight){
+				pixels = imageWidth;
+			}else if(imageHeight > imageWidth){
+				pixels = imageHeight;
+			}else{
+				pixels = imageWidth;
+			}
+
 			result = Bitmap.createBitmap(pixels,pixels, Bitmap.Config.ARGB_8888);
 			Canvas canvas = new Canvas(result);
 
@@ -140,7 +140,7 @@ public class CircularImageView extends ImageView{
 			paint.setColor(color);
 			canvas.drawCircle(pixels/2, pixels/2,pixels/2, paint);
 			paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));		
-			canvas.drawBitmap(bitmap, rect, rect, paint);
+			canvas.drawBitmap(resized, rect, rect, paint);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -148,7 +148,7 @@ public class CircularImageView extends ImageView{
 		return result;
 	}
 
-	
+
 	@Override
 	public void setOnClickListener(OnClickListener l) {
 		// TODO Auto-generated method stub
@@ -223,6 +223,10 @@ public class CircularImageView extends ImageView{
 
 	}
 
+	/**
+	 * 
+	 * @param onCircularClickListener
+	 */
 	public void setOnCircularClickListener(onCircularClickListener onClickListener) {
 		// TODO Auto-generated method stub
 		this.onClickListener = onClickListener;

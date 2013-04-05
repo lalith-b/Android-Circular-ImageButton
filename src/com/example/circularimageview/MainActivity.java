@@ -1,11 +1,11 @@
 package com.example.circularimageview;
 
-import com.example.circularimageview.R;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
+
+import com.example.circularimageview.CircularImageView.onCircularClickListener;
 
 public class MainActivity extends Activity {
 
@@ -16,14 +16,19 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.rounding);
 		
 		CircularImageView im = (CircularImageView) findViewById(R.id.imageView1);
-		im.setOnClickListener(new CircularImageView.onClickListener() {
+		im.setOnCircularClickListener(new onCircularClickListener() {
 
 			@Override
 			public void onCircularButtonClick(View v) {
 				// TODO Auto-generated method stub
 				Toast.makeText(getApplicationContext(), "I Clicked onCircularButtonClick ",Toast.LENGTH_LONG).show();
 			}
-		});
-		
+		});		
+		im.setCircularImageResource(R.drawable.ic_launcher,0);
 	}	
+	
+	public void test(View v){
+		Toast.makeText(getApplicationContext(), "I Clicked test through XML ",Toast.LENGTH_LONG).show();
+		v.invalidate();
+	}
 }
