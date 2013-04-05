@@ -2,5 +2,6 @@
 <resources>
     <declare-styleable name="Options">
         <attr name="alpha" format="integer"/>
+        <attr name="onCircularButtonClick" format="string" />
     </declare-styleable>
 </resources> 
