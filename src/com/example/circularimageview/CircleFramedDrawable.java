@@ -20,6 +20,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
+import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PixelFormat;
@@ -29,18 +30,16 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 
-import android.util.Log;
-
 class CircleFramedDrawable extends Drawable {
 
     private final Bitmap mBitmap;
     private final int mSize;
     private final Paint mPaint;
-    private final float mShadowRadius;
-    private final float mStrokeWidth;
-    private final int mFrameColor;
-    private final int mHighlightColor;
-    private final int mFrameShadowColor;
+    private float mShadowRadius;
+    private float mStrokeWidth;
+    private int mFrameColor;
+    private int mHighlightColor;
+    private int mFrameShadowColor;
 
     private float mScale;
     private Path mFramePath;
@@ -119,7 +118,8 @@ class CircleFramedDrawable extends Drawable {
 
         // white frame
         if (mPressed) {
-            mPaint.setStyle(Paint.Style.FILL);
+            mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+            mPaint.setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0X2E2E2E));
             mPaint.setColor(Color.argb((int) (0.33f * 255),
                             Color.red(mHighlightColor),
                             Color.green(mHighlightColor),
@@ -160,4 +160,74 @@ class CircleFramedDrawable extends Drawable {
     public void setColorFilter(ColorFilter cf) {
 
     }
+
+	/**
+	 * @return the mShadowRadius
+	 */
+	public float getShadowRadius() {
+		return mShadowRadius;
+	}
+
+	/**
+	 * @param mShadowRadius the mShadowRadius to set
+	 */
+	public void setShadowRadius(float mShadowRadius) {
+		this.mShadowRadius = mShadowRadius;
+	}
+
+	/**
+	 * @return the mStrokeWidth
+	 */
+	public float getStrokeWidth() {
+		return mStrokeWidth;
+	}
+
+	/**
+	 * @param mStrokeWidth the mStrokeWidth to set
+	 */
+	public void setStrokeWidth(float mStrokeWidth) {
+		this.mStrokeWidth = mStrokeWidth;
+	}
+
+	/**
+	 * @return the mFrameColor
+	 */
+	public int getFrameColor() {
+		return mFrameColor;
+	}
+
+	/**
+	 * @param mFrameColor the mFrameColor to set
+	 */
+	public void setFrameColor(int mFrameColor) {
+		this.mFrameColor = mFrameColor;
+	}
+
+	/**
+	 * @return the mHighlightColor
+	 */
+	public int getHighlightColor() {
+		return mHighlightColor;
+	}
+
+	/**
+	 * @param mHighlightColor the mHighlightColor to set
+	 */
+	public void setHighlightColor(int mHighlightColor) {
+		this.mHighlightColor = mHighlightColor;
+	}
+
+	/**
+	 * @return the mFrameShadowColor
+	 */
+	public int getFrameShadowColor() {
+		return mFrameShadowColor;
+	}
+
+	/**
+	 * @param mFrameShadowColor the mFrameShadowColor to set
+	 */
+	public void setFrameShadowColor(int mFrameShadowColor) {
+		this.mFrameShadowColor = mFrameShadowColor;
+	}
 }

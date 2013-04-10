@@ -45,14 +45,5 @@
         imaginea:alpha="1"
         imaginea:onCircularButtonClick="test" />
 
-    <com.example.circularimageview.CircularImageView
-        android:id="@+id/lb_circularimageview04"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/breakdancing_android"
-        imaginea:alpha="1" />
 
 </RelativeLayout>

@@ -3,8 +3,6 @@ package com.example.circularimageview;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import android.animation.TypeEvaluator;
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -31,20 +29,17 @@ public class CircularImageView extends ImageView{
 	 * @param onCircularClickListener
 	 */
 	public void setOnCircularClickListener(onCircularClickListener onClickListener) {
-		// TODO Auto-generated method stub
 		this.onClickListener = onClickListener;
 	}
 
 	private onCircularClickListener onClickListener;
 	private boolean BUTTON_PRESSED;
 	private boolean IS_PRESSED;
-	private Context context;
 
 	public CircularImageView(Context context, AttributeSet attrs) {
 		super(context,attrs);
 		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CircularImageView);
 
-		// TODO create onClick from xml itself.
 		final String handlerName = a.getString(R.styleable.CircularImageView_onCircularButtonClick);
 
 		if (handlerName != null) {
@@ -80,9 +75,12 @@ public class CircularImageView extends ImageView{
 			});
 		}
 
-		this.context = context;
 		setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-		setCircularImageDrawable(this.getDrawable());
+
+		if(this.getDrawable() != null){
+			setCircularImageDrawable(this.getDrawable());
+		}
+
 		a.recycle();
 	}
 
@@ -147,11 +145,9 @@ public class CircularImageView extends ImageView{
 
 	@Override
 	public void setOnClickListener(OnClickListener l) {
-		// TODO Auto-generated method stub
 		try {
 			throw new Exception("Use circularClickLister instead of onClickListener");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -196,8 +192,10 @@ public class CircularImageView extends ImageView{
 		float radius = getWidth()/2;
 		if (distance < radius  && !up) {
 			IS_PRESSED = true;
+			((CircleFramedDrawable)getDrawable()).setPressed(true);
 		} else {
 			IS_PRESSED = false;
+			((CircleFramedDrawable)getDrawable()).setPressed(false);
 
 			if(distance<radius){
 				BUTTON_PRESSED=true;
@@ -212,6 +210,81 @@ public class CircularImageView extends ImageView{
 				onClickListener.onCircularButtonClick(this);
 			}
 		}
+		invalidate();
+	}
 
+	/**
+	 * @return the mShadowRadius
+	 */
+	public float getShadowRadius() {
+		return ((CircleFramedDrawable)getDrawable()).getShadowRadius();
+	}
+
+	/**
+	 * @param mShadowRadius the mShadowRadius to set
+	 */
+	public void setShadowRadius(float mShadowRadius) {
+		((CircleFramedDrawable)getDrawable()).setShadowRadius(mShadowRadius);
+		invalidate();
+	}
+
+	/**
+	 * @return the mStrokeWidth
+	 */
+	public float getStrokeWidth() {
+		return ((CircleFramedDrawable)getDrawable()).getStrokeWidth();
+	}
+
+	/**
+	 * @param mStrokeWidth the mStrokeWidth to set
+	 */
+	public void setStrokeWidth(float mStrokeWidth) {
+		((CircleFramedDrawable)getDrawable()).setShadowRadius(mStrokeWidth);
+		invalidate();
+	}
+
+	/**
+	 * @return the mFrameColor
+	 */
+	public int getFrameColor() {
+		return ((CircleFramedDrawable)getDrawable()).getFrameColor();
+	}
+
+	/**
+	 * @param mFrameColor the mFrameColor to set
+	 */
+	public void setFrameColor(int mFrameColor) {
+		((CircleFramedDrawable)getDrawable()).setShadowRadius(mFrameColor);
+		invalidate();
+	}
+
+	/**
+	 * @return the mHighlightColor
+	 */
+	public int getHighlightColor() {
+		return ((CircleFramedDrawable)getDrawable()).getHighlightColor();
+	}
+
+	/**
+	 * @param mHighlightColor the mHighlightColor to set
+	 */
+	public void setHighlightColor(int mHighlightColor) {
+		((CircleFramedDrawable)getDrawable()).setShadowRadius(mHighlightColor);
+		invalidate();
+	}
+
+	/**
+	 * @return the mFrameShadowColor
+	 */
+	public int getFrameShadowColor() {
+		return ((CircleFramedDrawable)getDrawable()).getFrameShadowColor();
+	}
+
+	/**
+	 * @param mFrameShadowColor the mFrameShadowColor to set
+	 */
+	public void setFrameShadowColor(int mFrameShadowColor) {
+		((CircleFramedDrawable)getDrawable()).setShadowRadius(mFrameShadowColor);
+		invalidate();
 	}
 }

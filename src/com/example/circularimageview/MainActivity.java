@@ -15,7 +15,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.rounding);
 		
-		CircularImageView im = (CircularImageView) findViewById(R.id.imageView1);
+		CircularImageView im = (CircularImageView) findViewById(R.id.lb_circularimageview04);
 		im.setOnCircularClickListener(new onCircularClickListener() {
 
 			@Override
