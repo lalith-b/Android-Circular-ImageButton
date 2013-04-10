@@ -112,7 +112,7 @@ public class CircularImageView extends ImageView{
 				// Bitmap is a rectangle with width > height
 				circleFramedRect = 
 						new CircleFramedDrawable(bitmap, imageWidth, 
-								Color.DKGRAY, 
+								Color.BLUE, 
 								3, 
 								Color.LTGRAY, 
 								2, 

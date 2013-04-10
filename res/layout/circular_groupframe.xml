@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
+        android:layout_gravity="bottom"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:weightSum="4" >
+
+        <com.example.circularimageview.CircularImageView
+            android:id="@+id/lb_circularimageview01"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/breakdancing_android"
+            android:layout_weight="1"
+            app:alpha="1" />
+
+        <com.example.circularimageview.CircularImageView
+            android:id="@+id/lb_circularimageview02"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/breakdancing_android"
+            android:layout_weight="1"
+            app:alpha="1" />
+
+        <com.example.circularimageview.CircularImageView
+            android:id="@+id/lb_circularimageview03"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:layout_weight="1"
+            android:src="@drawable/breakdancing_android"
+            app:alpha="1" />
+
+        <com.example.circularimageview.CircularImageView
+            android:id="@+id/lb_circularimageview04"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/breakdancing_android"
+            android:layout_weight="1"
+            app:alpha="1" />
+
+    </LinearLayout>
+
+</FrameLayout>

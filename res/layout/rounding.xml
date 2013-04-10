@@ -7,17 +7,6 @@
     android:orientation="vertical" >
 
     <com.example.circularimageview.CircularImageView
-        android:id="@+id/imageView1"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_alignBottom="@+id/lb_circularimageview05"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/breakdancing_android"
-        imaginea:alpha="1" />
-
-    <com.example.circularimageview.CircularImageView
         android:id="@+id/lb_circularimageview04"
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -40,28 +29,30 @@
         imaginea:alpha="1" />
 
     <com.example.circularimageview.CircularImageView
+        android:id="@+id/circularImageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/breakdancing_android" />
+
+    <com.example.circularimageview.CircularImageView
         android:id="@+id/lb_circularimageview05"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:scaleType="centerCrop"
         android:src="@drawable/breakdancing_android"
         imaginea:alpha="1"
         imaginea:onCircularButtonClick="test" />
 
     <com.example.circularimageview.CircularImageView
-        android:id="@+id/lb_circularimageview03"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/lb_circularimageview04"
-        android:layout_marginTop="151dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/student_rectangle"
-        imaginea:alpha="1"
-        imaginea:onCircularButtonClick="test" />
+        android:id="@+id/lb_circularimageview04"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/breakdancing_android"
+        imaginea:alpha="1" />
 
 </RelativeLayout>
