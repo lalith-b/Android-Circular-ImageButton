@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="Options">
+    <declare-styleable name="CircularImageView">
         <attr name="alpha" format="integer"/>
         <attr name="onCircularButtonClick" format="string" />
     </declare-styleable>

@@ -3,16 +3,13 @@ package com.example.circularimageview;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import android.animation.TypeEvaluator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.LightingColorFilter;
-import android.graphics.Paint;
-import android.graphics.PorterDuff.Mode;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -29,25 +26,26 @@ public class CircularImageView extends ImageView{
 		public void onCircularButtonClick(View v);
 	}
 
+	/**
+	 * 
+	 * @param onCircularClickListener
+	 */
+	public void setOnCircularClickListener(onCircularClickListener onClickListener) {
+		// TODO Auto-generated method stub
+		this.onClickListener = onClickListener;
+	}
+
 	private onCircularClickListener onClickListener;
 	private boolean BUTTON_PRESSED;
 	private boolean IS_PRESSED;
+	private Context context;
 
 	public CircularImageView(Context context, AttributeSet attrs) {
 		super(context,attrs);
-		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.Options);
-		int maskAlphaFactor = a.getInteger(R.styleable.Options_alpha,0);		
-		if(maskAlphaFactor >1){
-			try {
-				throw new Exception("Cannot take alpha inputs greater than 1");
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CircularImageView);
 
 		// TODO create onClick from xml itself.
-		final String handlerName = a.getString(R.styleable.Options_onCircularButtonClick);
+		final String handlerName = a.getString(R.styleable.CircularImageView_onCircularButtonClick);
 
 		if (handlerName != null) {
 			setOnCircularClickListener(new onCircularClickListener() {
@@ -82,70 +80,68 @@ public class CircularImageView extends ImageView{
 			});
 		}
 
+		this.context = context;
 		setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-		setCircularImageDrawable(this.getDrawable(),maskAlphaFactor);
+		setCircularImageDrawable(this.getDrawable());
 		a.recycle();
 	}
 
-	public void setCircularImageDrawable(Drawable resId,int alpha){
-		Bitmap bm = ((BitmapDrawable)resId).getBitmap();
-		this.setImageBitmap(getRoundedRectBitmap(bm));
+	public void setCircularImageDrawable(Drawable resId){
+		Bitmap bm = ((BitmapDrawable)resId).getBitmap();	
+		this.setImageDrawable((getRoundedRectBitmap(bm)));
 	}
 
-	public void setCircularImageResource(int resId,int alpha){
+	public void setCircularImageResource(int resId){
 		Bitmap bm = BitmapFactory.decodeResource(getResources(), resId);
-		this.setImageBitmap(getRoundedRectBitmap(bm));
+		this.setImageDrawable((getRoundedRectBitmap(bm)));
 	}
 
-	public void setCircularImageBitmap(Bitmap resId,int alpha){
-		this.setImageBitmap(getRoundedRectBitmap(resId));
+	public void setCircularImageBitmap(Bitmap resId){
+		this.setImageDrawable((getRoundedRectBitmap(resId)));
 	}
 
+	private Drawable getRoundedRectBitmap(Bitmap bitmap) {
+		CircleFramedDrawable circleFramedRect = null;
 
-	private Bitmap getRoundedRectBitmap(Bitmap bitmap) {
-		int pixels;
-		Bitmap result = null;
 		try {
-
-			Bitmap resized;
-
-			if(bitmap.getHeight()>bitmap.getWidth()){
-				resized = Bitmap.createScaledBitmap(bitmap, bitmap.getHeight(), bitmap.getHeight(), true);
-			}else if(bitmap.getWidth()>bitmap.getHeight()){
-				resized = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(),bitmap.getWidth(), true);
-			}else{
-				resized = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(),bitmap.getHeight(), true);
-			}
 
 			imageWidth = bitmap.getWidth();
 			imageHeight = bitmap.getHeight();
 
 			if(imageWidth > imageHeight){
-				pixels = imageWidth;
+				// Bitmap is a rectangle with width > height
+				circleFramedRect = 
+						new CircleFramedDrawable(bitmap, imageWidth, 
+								Color.DKGRAY, 
+								3, 
+								Color.LTGRAY, 
+								2, 
+								Color.RED);
+
 			}else if(imageHeight > imageWidth){
-				pixels = imageHeight;
+				// Bitmap is a rectangle with width < height
+				circleFramedRect = 
+						new CircleFramedDrawable(bitmap, imageHeight, 
+								Color.DKGRAY, 
+								3, 
+								Color.LTGRAY, 
+								2, 
+								Color.RED);
+
 			}else{
-				pixels = imageWidth;
+				// Bitmap is a square
+				circleFramedRect = 
+						new CircleFramedDrawable(bitmap, imageHeight, 
+								Color.DKGRAY, 
+								3, 
+								Color.LTGRAY, 
+								2, 
+								Color.RED);
 			}
+		}catch(Exception e){
 
-			result = Bitmap.createBitmap(pixels,pixels, Bitmap.Config.ARGB_8888);
-			Canvas canvas = new Canvas(result);
-
-			int color = 0xff424242;
-			Paint paint = new Paint(Paint.FILTER_BITMAP_FLAG);
-			Rect rect = new Rect(0,0, pixels, pixels);
-
-			paint.setAntiAlias(true);
-			canvas.drawARGB(0, 0, 0, 0);
-			paint.setColor(color);
-			canvas.drawCircle(pixels/2, pixels/2,pixels/2, paint);
-			paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));		
-			canvas.drawBitmap(resized, rect, rect, paint);
-
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
-		return result;
+		return circleFramedRect;
 	}
 
 
@@ -200,18 +196,14 @@ public class CircularImageView extends ImageView{
 		float radius = getWidth()/2;
 		if (distance < radius  && !up) {
 			IS_PRESSED = true;
-			getDrawable().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0X2E2E2E));
-			invalidate();
 		} else {
 			IS_PRESSED = false;
-			getDrawable().setColorFilter(null);
 
 			if(distance<radius){
 				BUTTON_PRESSED=true;
 			}else{
 				BUTTON_PRESSED=false;
 			}
-			invalidate();
 		}
 
 		if(up && BUTTON_PRESSED){
@@ -221,14 +213,5 @@ public class CircularImageView extends ImageView{
 			}
 		}
 
-	}
-
-	/**
-	 * 
-	 * @param onCircularClickListener
-	 */
-	public void setOnCircularClickListener(onCircularClickListener onClickListener) {
-		// TODO Auto-generated method stub
-		this.onClickListener = onClickListener;
 	}
 }

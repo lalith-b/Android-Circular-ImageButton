@@ -22,9 +22,10 @@ public class MainActivity extends Activity {
 			public void onCircularButtonClick(View v) {
 				// TODO Auto-generated method stub
 				Toast.makeText(getApplicationContext(), "I Clicked onCircularButtonClick ",Toast.LENGTH_LONG).show();
+				((CircularImageView) v).setCircularImageDrawable(getResources().getDrawable(R.drawable.student_rectangle));
 			}
 		});		
-		im.setCircularImageResource(R.drawable.ic_launcher,0);
+				
 	}	
 	
 	public void test(View v){
