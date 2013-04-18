@@ -48,6 +48,9 @@ class CircleFramedDrawable extends Drawable {
     private RectF mFrameRect;
     private boolean mPressed;
 
+    private boolean mClockWiseRotate;
+	private float mDelta;
+    
     public CircleFramedDrawable(Bitmap bitmap, int size,
             int frameColor, float strokeWidth,
             int frameShadowColor, float shadowRadius,
@@ -115,7 +118,13 @@ class CircleFramedDrawable extends Drawable {
 
         mFramePath.reset();
         mFramePath.addArc(mFrameRect, 0f, 360f);
-
+        
+//		  TODO the rotate animation to be played.        
+//        if(mClockWiseRotate)
+//        	mFramePath.addArc(mFrameRect, 90f, 90f+mDelta);
+//        else
+//        	mFramePath.addArc(mFrameRect, 180f, 180f+mDelta);
+        
         // white frame
         if (mPressed) {
             mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
@@ -134,6 +143,22 @@ class CircleFramedDrawable extends Drawable {
         canvas.drawPath(mFramePath, mPaint);
     }
 
+    /**
+     * TODO
+     * @param rotateDirection (clockwise == true /anticlockwise == false)
+     * @param delta (Maximum 360f)
+     * @throws Exception 
+     */
+    public void setRotateAnim(boolean ClockWiseRotate,float byHowmuch) throws Exception{
+    	if(ClockWiseRotate && mDelta <= 180f){
+    		mDelta = mDelta + byHowmuch;
+    	}else if(!ClockWiseRotate && mDelta <= 360f){
+    		mDelta = mDelta + byHowmuch;
+    	}else{
+    		throw new Exception("Error mDelta cannot be > 360f");
+    	}
+    }
+    
     public void setScale(float scale) {
         mScale = scale;
     }

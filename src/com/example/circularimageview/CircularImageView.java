@@ -2,6 +2,8 @@ package com.example.circularimageview;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -211,6 +213,33 @@ public class CircularImageView extends ImageView{
 			}
 		}
 		invalidate();
+	}
+
+	/**
+	 * TODO need to work on this not working yet.
+	 * @param mDelta
+	 */
+	public void setClockWiseRotateAnim(final float mDelta){
+		int delay = 100; // delay for 1 sec. 
+		int period = 500; // repeat every 2 sec. 
+		
+		Timer timer = new Timer(); 	
+		timer.scheduleAtFixedRate(new TimerTask() 
+		{ 
+			boolean setRotation = true;
+			
+			public void run() 
+			{ 
+				try {
+					((CircleFramedDrawable)getDrawable()).setRotateAnim(setRotation,mDelta);
+					invalidate();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} 
+		}, delay, period); 
+
 	}
 
 	/**
