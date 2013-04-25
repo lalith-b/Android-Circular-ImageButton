@@ -1,3 +1,5 @@
 proguard-project.txt
 project.properties
 bin
+gen/com/deathlord87/circularimageview/BuildConfig.java
+gen/com/deathlord87/circularimageview/R.java
