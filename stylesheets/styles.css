@@ -309,8 +309,10 @@ a.buttons:hover {
 /* Section - for main page content */
 
 section {
-  width:650px;
-  float:right;
+  width:100%;
+  height: 100%;
+  float:left;
+  margin-left: 300px;
   padding-bottom:50px;
 }
 
