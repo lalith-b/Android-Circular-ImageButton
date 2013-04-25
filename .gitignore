@@ -3,3 +3,6 @@ project.properties
 bin
 gen/com/deathlord87/circularimageview/BuildConfig.java
 gen/com/deathlord87/circularimageview/R.java
+example/CircularImageButtonExample/gen/com/deathlord87/circularimageview/R.java
+example/CircularImageButtonExample/gen/com/example/circularimagebuttonexample/BuildConfig.java
+example/CircularImageButtonExample/gen/com/example/circularimagebuttonexample/R.java
