@@ -1,5 +1,3 @@
-bin
-gen
-prograud-project.txt
-.project
+proguard-project.txt
 project.properties
+bin

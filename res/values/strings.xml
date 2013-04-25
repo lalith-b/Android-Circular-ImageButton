@@ -1,13 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="app_name">Dummy</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
-
-    <string-array name="role_list">
-        <item>SuperAdmin</item>
-        <item>Child</item>        
-    </string-array>
-
+    <string name="app_name">CircularImageButton</string>
 </resources>
