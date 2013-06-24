@@ -6,44 +6,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <com.deathlord87.circularimageview.CircularImageView
+    <com.deathlord87.libs.circularimagebutton.RoundedImageView
         android:id="@+id/lb_circularimageview04"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
+        android:layout_width="200dp"
+        android:layout_height="300dp"
+		android:layout_centerInParent="true"
         android:scaleType="centerCrop"
+        android:background="@android:color/darker_gray"
         android:src="@drawable/breakdancing_android"
-        imaginea:alpha="1" />
-
-    <com.deathlord87.circularimageview.CircularImageView
-        android:id="@+id/lb_circularimageview02"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="27dp"
-        android:layout_marginRight="17dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/breakdancing_android"
-        imaginea:alpha="1" />
-
-    <com.deathlord87.circularimageview.CircularImageView
-        android:id="@+id/circularImageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/breakdancing_android" />
-
-    <com.deathlord87.circularimageview.CircularImageView
-        android:id="@+id/lb_circularimageview05"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/breakdancing_android"
-        imaginea:alpha="1"
-        imaginea:onCircularButtonClick="test" />
-
-
+      	imaginea:FrameColor="@android:color/black"
+        imaginea:HighlightColor="@android:color/white"
+        imaginea:StrokeWidth="2"
+        imaginea:ShadowRadius="1"
+        imaginea:Radius="200dp"/>
 </RelativeLayout>

@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="CircularImageView">
-        <attr name="alpha" format="integer"/>
+        <attr name="FrameColor" format="color" />
+        <attr name="HighlightColor" format="color" />
+        <attr name="FrameShadowColor" format="color" />
+        <attr name="StrokeWidth" format="float" />
+        <attr name="ShadowRadius" format="float" />
+        <attr name="Radius" format="dimension" />
         <attr name="onCircularButtonClick" format="string" />
-    </declare-styleable>
-</resources> 
+		</declare-styleable>
+</resources>
