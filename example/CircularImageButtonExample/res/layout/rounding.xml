@@ -5,18 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+<!--           	imaginea:FrameColor="@android:color/black"
+        imaginea:HighlightColor="@android:color/white"
+        imaginea:StrokeWidth="2"
+        imaginea:ShadowRadius="1" -->
+
+    <com.deathlord87.libs.circularimagebutton.RoundedImageView
+        android:id="@+id/lb_circularimageview04"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/darker_gray"
+        android:scaleType="centerCrop"
+        android:src="@drawable/breakdancing_android" />
 
     <com.deathlord87.libs.circularimagebutton.RoundedImageView
         android:id="@+id/lb_circularimageview04"
         android:layout_width="200dp"
         android:layout_height="300dp"
-		android:layout_centerInParent="true"
-        android:scaleType="centerCrop"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:background="@android:color/darker_gray"
-        android:src="@drawable/breakdancing_android"
-      	imaginea:FrameColor="@android:color/black"
-        imaginea:HighlightColor="@android:color/white"
-        imaginea:StrokeWidth="2"
-        imaginea:ShadowRadius="1"
-        imaginea:Radius="200dp"/>
+        android:scaleType="centerCrop"
+        android:src="@drawable/breakdancing_android" />
+
 </RelativeLayout>

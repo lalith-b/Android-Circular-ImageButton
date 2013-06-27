@@ -6,7 +6,8 @@
         <attr name="FrameShadowColor" format="color" />
         <attr name="StrokeWidth" format="float" />
         <attr name="ShadowRadius" format="float" />
-        <attr name="Radius" format="dimension" />
+        <attr name="Diameter" format="dimension" />
         <attr name="onCircularButtonClick" format="string" />
+        <attr name="EnableTouch" format="boolean"/>
 		</declare-styleable>
 </resources>

@@ -29,20 +29,21 @@ public class RoundedImageView extends ImageView {
 	private Bitmap mBitmap;
 	private Paint mPaint;
 
-	private int mSize = getWidth();
+	private int mSize;
 	private float mShadowRadius = 0;
 	private float mStrokeWidth = 1;
 	private int mFrameColor = Color.DKGRAY;
 	private int mHighlightColor = Color.WHITE;
 	private int mFrameShadowColor = Color.WHITE;
 	private float mScale = 1.0f;
-
+	private boolean mEnableTouch;
+	
 	private Path mFramePath;
 	private Rect mSrcRect;
 	private RectF mDstRect;
 	private RectF mFrameRect;
 	private boolean mPressed;
-
+	
 	/**
 	 * @author lalithb
 	 *
@@ -87,7 +88,8 @@ public class RoundedImageView extends ImageView {
 		mHighlightColor = a.getColor(R.styleable.CircularImageView_HighlightColor,Color.WHITE);
 		mStrokeWidth = a.getFloat(R.styleable.CircularImageView_StrokeWidth,4.0f);
 		mShadowRadius = a.getFloat(R.styleable.CircularImageView_ShadowRadius,0);
-		mSize = a.getDimensionPixelOffset(R.styleable.CircularImageView_Radius,getWidth());
+		mSize = a.getDimensionPixelOffset(R.styleable.CircularImageView_Diameter,0);
+		mEnableTouch = a.getBoolean(R.styleable.CircularImageView_EnableTouch,false);
 		
 		if (handlerName != null) {
 			setOnCircularClickListener(new onCircularClickListener() {
@@ -145,15 +147,25 @@ public class RoundedImageView extends ImageView {
 		Bitmap originalBitmap = b.copy(Bitmap.Config.ARGB_8888, true);
 		Bitmap roundBitmap = getCroppedBitmap(originalBitmap, mSize, mFrameColor, mStrokeWidth, mFrameShadowColor, mShadowRadius, mHighlightColor);
 		originalBitmap.recycle();
-		canvas.drawBitmap(roundBitmap, 0, 0, null);
-
+		
+		if (getWidth() > getHeight()) {
+			canvas.drawBitmap(roundBitmap, getHeight()/2+mSize/2, 0, null);
+		}else{
+			canvas.drawBitmap(roundBitmap, 0 , getHeight()/2-mSize/2, null);
+		}
 	}
 
 	public Bitmap getCroppedBitmap(Bitmap bitmap, int size,
 			int frameColor, float strokeWidth,
 			int frameShadowColor, float shadowRadius,
 			int highlightColor) {
-
+		if (size == 0) {
+			if (getWidth() > getHeight()) {
+				size = getHeight();
+			}else{
+				size = getWidth();				
+			}
+		}
 		mSize = size;
 		mShadowRadius = shadowRadius;
 		mFrameColor = frameColor;
@@ -311,7 +323,11 @@ public class RoundedImageView extends ImageView {
 				onClickListener.onCircularButtonClick(this);
 			}
 		}
-		invalidate();
+		
+		if (mEnableTouch) {
+			invalidate();			
+		}
+		
 	}
 
 	public void setScale(float scale) {
